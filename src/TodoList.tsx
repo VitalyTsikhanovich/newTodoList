@@ -1,5 +1,6 @@
-import React, {useState, ChangeEvent} from "react";
+import React, {ChangeEvent, useState} from "react";
 import {FilterValueType} from "./App";
+import {AddItemForm} from "./AddItemForm";
 
 
 export type TaskType = {
@@ -24,12 +25,12 @@ type PropsType = {
 
 export function TodoList(props: PropsType) {
 
-    let [title, setTitle] = useState('')
-    let [error, setError] = useState<string | null>(null)
-    let onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {  // получаем данные из input
-        setTitle(event.currentTarget.value)
-        setError(null)
-    }
+    // let [title, setTitle] = useState('')
+    // let [error, setError] = useState<string | null>(null)
+    // let onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {  // получаем данные из input
+    //     setTitle(event.currentTarget.value)
+    //     setError(null)
+    // }
 
 // let onPressHandler = (event: KeyboardEvent<HTMLInputElement>)=>{
 // if (event.charCode === 13){
@@ -37,7 +38,7 @@ export function TodoList(props: PropsType) {
 // }
 // }
 
-    let onClickAllHandler = () => props.changeFilter('all', props.id )  // в одну строчку без {}
+    let onClickAllHandler = () => props.changeFilter('all', props.id)  // в одну строчку без {}
 
     let onClickActiveHandler = () => {
         props.changeFilter('active', props.id)
@@ -46,35 +47,36 @@ export function TodoList(props: PropsType) {
         props.changeFilter('completed', props.id)
     }
 
-    const addTask = () => {
-
-        if (title.trim() !== '') {
-            //убранными с двух сторон пробелами (trim)
-            props.addTask(title, props.id)
-            setTitle('')                              //добавить таску{
-        } else {
-            setError('ошибка')
-        }
-    }
-let removeTodoList = ()=>{
+    // const addTask = () => {
+    //     if (title.trim() !== '') {                    //убранными с двух сторон пробелами (trim)
+    //         props.addTask(title, props.id)
+    //         setTitle('')                              //добавить таску{
+    //     } else {
+    //         setError('ошибка')
+    //     }
+    // }
+    let removeTodoList = () => {
         props.removeTodoList(props.id)
+    }
+const addTask = (title: string)=>{
+    props.addTask(props.title, props.id)
 }
-
     return (
         <div>
             <h3>{props.title}
                 <button onClick={removeTodoList}>x</button>
             </h3>
-            <div>
-                <input value={title}
-                       onChange={onChangeHandler}
-                       className={error ? 'error' : ''}
-                />
-                <button onClick={addTask}> +</button>
-                {error &&
-                <div className='error-message'> {error}</div>
-                }
-            </div>
+            <AddItemForm addItem={addTask} />
+            {/*<div>*/}
+            {/*    <input value={title}*/}
+            {/*           onChange={onChangeHandler}*/}
+            {/*           className={error ? 'error' : ''}*/}
+            {/*    />*/}
+            {/*    <button onClick={addTask}> +</button>*/}
+            {/*    {error &&*/}
+            {/*    <div className='error-message'> {error}</div>*/}
+            {/*    }*/}
+            {/*</div>*/}
             <div>
                 <ul>
                     {
@@ -107,3 +109,4 @@ let removeTodoList = ()=>{
         </div>
     )
 }
+

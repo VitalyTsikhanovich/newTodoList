@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import {TaskType, TodoList} from "./TodoList";
 import {v1} from 'uuid';
+import {AddItemForm} from "./AddItemForm";
 
 //генерировать текстовые уникальные id
 
@@ -26,7 +27,7 @@ function App() {
 
     let [todoLists, setTodoLists] = useState<Array<TodoListType>>([
         {id: todoListId1, title: 'What to learn ', filter: 'all'},
-        {id: todoListId2, title: 'What to learn ', filter: 'completed'},
+        {id: todoListId2, title: 'What to learn ', filter: 'all'},
     ])
 
     let [tasks, setTasks] = useState<TasksStateType>({
@@ -88,8 +89,22 @@ function App() {
     //     delete tasks[todoListId]
     //     setTasks({...tasks})
     // }
+    function addTodoList(title: string){
+        let todoList: TodoListType ={
+            id: v1(),
+            filter: 'all',
+            title: title
+        }
+setTodoLists([todoList, ...todoLists])
+        setTasks({
+            ...tasks,
+            [todoList.id]:[]
+        })
+    }
+
     return (
         <div className="App">
+            <AddItemForm addItem={addTodoList}/>
             {
                 todoLists.map((tl) => {
                     let taskForTodoList = tasks[tl.id]      // берем из объекта tasks и достаем по id
