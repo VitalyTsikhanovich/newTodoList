@@ -1,4 +1,6 @@
 import React, {ChangeEvent, useState} from "react";
+import {Button, IconButton, TextField} from "@material-ui/core";
+import {Add, AddBox, Title} from "@material-ui/icons";
 
 export type AddItemFormPropsType = {
     addItem: (title: string) => void
@@ -23,14 +25,21 @@ export function AddItemForm(props: AddItemFormPropsType) {
     return (
 
         <div>
-            <input value={title}
+            <TextField variant={'outlined'}
+                       value={title}
                    onChange={onChangeHandler}
-                   className={error ? 'error' : ''}
+                       label={'Title'}
+                       helperText={error}
+                       error={!!error}
             />
-            <button onClick={addTask}> +</button>
-            {error &&
-            <div className='error-message'> {error}</div>
-            }
+            <IconButton color={'primary'} onClick={addTask}>
+            <AddBox/>
+            </IconButton>
+            {/*<Button variant={'contained'} color={'primary'} onClick={addTask}> +</Button>*/}
+            {/*<button onClick={addTask}> +</button>*/}
+            {/*{error &&*/}
+            {/*// <div className='error-message'> {error}</div>*/}
+            {/*}*/}
         </div>
 
     )
