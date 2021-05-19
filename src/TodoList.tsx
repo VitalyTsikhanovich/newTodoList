@@ -3,7 +3,7 @@ import {FilterValueType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {Button, Checkbox, IconButton} from "@material-ui/core";
-import {CheckBox, Delete} from "@material-ui/icons";
+import { Delete} from "@material-ui/icons";
 // import {Delete} from '@material-ui/icons'
 
 
@@ -65,7 +65,7 @@ export function TodoList(props: PropsType) {
         props.removeTodoList(props.id)
     }
 const addTask = (title: string)=>{
-    props.addTask(props.title, props.id)
+    props.addTask(title, props.id)
 }
 const changeTodoListTitle = (newTitle: string)=>{
     props.changeTodoListTitle(props.id, newTitle)
