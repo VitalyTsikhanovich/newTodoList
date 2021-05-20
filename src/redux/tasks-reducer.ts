@@ -2,12 +2,27 @@ import {v1} from "uuid";
 import {TasksStateType} from "../App";
 import {addTodoListACType, removeTodoListACType} from "./todolists-reducer";
 
+// export let todoListId1 = v1()
+// export let todoListId2 = v1()
+
+// let initialState: TasksStateType = {
+//     [todoListId1]: [
+//         {id: v1(), title: 'CSS', isDone: true},
+//         {id: v1(), title: 'React', isDone: false},
+//     ],
+//     [todoListId2]: [
+//         {id: v1(), title: 'CSS', isDone: true},
+//         {id: v1(), title: 'React', isDone: false},
+//     ]
+// }
 
 let initialState: TasksStateType = {}
+
 
 export type InitialStateType = typeof initialState
 
 export const tasksReducer = (state: InitialStateType = initialState, action: ActionsType): TasksStateType => {
+    debugger
     switch (action.type) {
         case "REMOVE-TASK": {
             const stateCopy = {...state}     // делаем копию стейта
@@ -59,7 +74,10 @@ export const tasksReducer = (state: InitialStateType = initialState, action: Act
             delete stateCopy[action.todoListId]
             return stateCopy
         }
+        default:
+            return state
     }
+
 }
 
 export const removeTaskAC = (taskId: string, todoListId: string) => ({type: 'REMOVE-TASK', taskId, todoListId} as const)
