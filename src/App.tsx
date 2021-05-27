@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import './App.css';
 import {TaskType, TodoList} from "./TodoList";
 import {AddItemForm} from "./AddItemForm";
@@ -13,7 +13,6 @@ import {
     removeTodoListAC,
 } from "./redux/todolists-reducer";
 import {AppRootStateType} from "./store/store";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./redux/tasks-reducer";
 
 
 //генерировать текстовые уникальные id
@@ -31,30 +30,29 @@ export type TasksStateType = {
 }
 
 function App() {
-
+    console.log('asss')
     const dispatch = useDispatch()
 
     const todoLists = useSelector<AppRootStateType, Array<TodoListType>>(state => state.todoLists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
 
-    function changeFilter(value: FilterValueType, todoListId: string) {
+    const changeFilter = useCallback((value: FilterValueType, todoListId: string) => {
         dispatch(changeTodoListFilterAC(value, todoListId))                     //!!!!!
-    }
+    }, [dispatch])
 
 
-
-    function removeTodoList(todoListId: string) {
+    const removeTodoList = useCallback((todoListId: string) => {
         let action = removeTodoListAC(todoListId)
         dispatch(action)
-    }
+    }, [dispatch])
 
-    function changeTodoListTitle(id: string, netTitle: string) {
+    const changeTodoListTitle = useCallback((id: string, netTitle: string) => {
         dispatch(changeTodoListTitleAC(id, netTitle))
-    }
+    }, [dispatch])
 
-    function addTodoList(title: string) {
+    const addTodoList = useCallback((title: string) => {                      //кэширование функции
         dispatch(addTodoListAC(title))
-    }
+    }, [dispatch])
 
 
     return (

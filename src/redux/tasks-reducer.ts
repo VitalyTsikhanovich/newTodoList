@@ -22,7 +22,7 @@ let initialState: TasksStateType = {}
 export type InitialStateType = typeof initialState
 
 export const tasksReducer = (state: InitialStateType = initialState, action: ActionsType): TasksStateType => {
-    debugger
+
     switch (action.type) {
         case "REMOVE-TASK": {
             const stateCopy = {...state}     // делаем копию стейта
@@ -41,28 +41,23 @@ export const tasksReducer = (state: InitialStateType = initialState, action: Act
             return stateCopy
         }
         case "CHANGE-TASK-STATUS": {
-            const stateCopy = {...state}
-            let tasks = state[action.todoListId]                                                    //чекбокс
-            let task = tasks.find(t => t.id === action.taskId)
-            if (task) {   // псевдоистина
-                task.isDone = action.isDone
-                // tasks[todoListId] = task
-            }
-            return stateCopy
+
+            let tasks = state[action.todoListId]                                          //чекбокс
+            state[action.todoListId] = tasks.map(t => t.id === action.taskId
+                ? {...t, isDone: action.isDone}
+                : t)
+
+            return ({...state})
         }
         case "CHANGE-TASK-TITLE": {
-            const stateCopy = {...state}
             //достаем нужный массив по todoListId
-            let tasks1 = state[action.todoListId]
+            let tasks = state[action.todoListId]
+            state[action.todoListId] = tasks.map(t => t.id === action.taskId
+                ? {...t, title: action.newTitle}
+                : t)
             //найдем нужную таску
-            let task = tasks1.find(t => t.id === action.taskId)
-            //изменим таску если она нашлась
-            if (task) {                                      // псевдоистина
-                task.title = action.newTitle
-                // tasks[todoListId] = task
-                //засетаем в стейт копию объекта, что бы React отреагировал перерисовкой
-            }
-            return stateCopy
+
+            return ({...state})
         }
         case "ADD-TODOLIST": {
             const stateCopy = {...state}
