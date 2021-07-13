@@ -1,4 +1,5 @@
 import axios from "axios";
+import {FilterValueType} from "../redux/todolists-reducer";
 
 
 const setting = {
@@ -18,7 +19,7 @@ const instance = axios.create({
 })
 
 
-type TodoListType = {
+export type TodoListType = {
     id: string
     title: string
     addedDate: string
@@ -48,11 +49,27 @@ type ResponseType<D = {}> = {
     messages: Array<string>
     data: D
 }
+
+export enum TaskStatuses{
+    New,
+    InProgress,
+    Completed,
+    Draft
+}
+
+export enum TaskPriorities {
+    Low,
+    Middle,
+    Hi,
+    Urgently,
+    Later
+}
+
 export type TaskType = {
     description: string
     title: string
-    status: number
-    priority: number
+    status: TaskStatuses
+    priority: TaskPriorities
     startDate: string
     deadline: string
     id: string
@@ -69,6 +86,8 @@ export type UpdateTask={
     startDate: string
     deadline: string
 }
+
+
 
 
 type GetTasksResponse = {

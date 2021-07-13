@@ -1,6 +1,6 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import './App.css';
-import {TaskType, TodoList} from "./TodoList";
+import { TodoList} from "./TodoList";
 import {AddItemForm} from "./AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
@@ -9,32 +9,38 @@ import {useDispatch, useSelector} from "react-redux";
 import {
     addTodoListAC,
     changeTodoListFilterAC,
-    changeTodoListTitleAC,
-    removeTodoListAC,
+    changeTodoListTitleAC, fetchTodoListTC, FilterValueType,
+    removeTodoListAC, TodoListDomainType,
 } from "./redux/todolists-reducer";
 import {AppRootStateType} from "./store/store";
+import {TaskType, TodoListType} from "./api/todoList-api";
 
 
 //генерировать текстовые уникальные id
 
 
-export type FilterValueType = 'all' | 'active' | 'completed'
-export type TodoListType = {
-    id: string
-    title: string
-    filter: FilterValueType
-}
+
+// type TodoListType = {
+//     id: string
+//     title: string
+//     filter: FilterValueType
+// }
 
 export type TasksStateType = {
-    [key: string]: Array<TaskType>
+    [key: string]: Array<TaskType>,
 }
 
 function App() {
-    console.log('asss')
+    // console.log('asss')
     const dispatch = useDispatch()
-
-    const todoLists = useSelector<AppRootStateType, Array<TodoListType>>(state => state.todoLists)
+    // const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
+    const todoLists = useSelector<AppRootStateType, Array<TodoListDomainType>>(state => state.todoLists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
+
+
+    useEffect(() => {
+        dispatch(fetchTodoListTC())
+    }, [])
 
     const changeFilter = useCallback((value: FilterValueType, todoListId: string) => {
         dispatch(changeTodoListFilterAC(value, todoListId))                     //!!!!!
