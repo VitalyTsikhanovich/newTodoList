@@ -7,17 +7,14 @@ import {Menu} from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
 
 import {
-    addTodoListAC,
+     addTodoListTC,
     changeTodoListFilterAC,
     changeTodoListTitleAC, fetchTodoListTC, FilterValueType,
-    removeTodoListAC, TodoListDomainType,
+    removeTodoListAC, removeTodoListTC, TodoListDomainType,
 } from "./redux/todolists-reducer";
 import {AppRootStateType} from "./store/store";
 import {TaskStatuses, TaskType} from "./api/todoList-api";
-import {
-    addTaskTS,
 
-} from "./redux/tasks-reducer";
 
 
 //генерировать текстовые уникальные id
@@ -38,48 +35,23 @@ function App() {
     }, [])
 
 
-
-
     const changeFilter = useCallback((value: FilterValueType, todoListId: string) => {
         dispatch(changeTodoListFilterAC(value, todoListId))                     //!!!!!
     }, [dispatch])
 
 
-
-    // const removeTask = useCallback(function (id: string, todolistId: string) {
-    //     const thunk = removeTaskTS(id, todolistId);
-    //     dispatch(thunk);
-    // }, []);
-
-
-    // const addTask = useCallback(function (title: string, todoListId: string) {
-    //     const thunk = addTaskTS(title, todoListId)
-    //     dispatch(thunk)
-    // }, []);
-
-    // const changeStatus = useCallback(function (id: string, status: TaskStatuses, todoListId: string) {
-    //     const action = changeTaskStatusAC(id, status, todoListId);
-    //     dispatch(action);
-    // }, []);
-
-    // const changeTaskTitle = useCallback(function (id: string, newTitle: string, todolistId: string) {
-    //     const action = changeTaskTitleAC(id, newTitle, todolistId);
-    //     dispatch(action);
-    // }, []);
-
-
-
     const removeTodoList = useCallback((todoListId: string) => {
-        let action = removeTodoListAC(todoListId)
-        dispatch(action)
+        let thunk = removeTodoListTC(todoListId)
+        dispatch(thunk)
     }, [dispatch])
 
     const changeTodoListTitle = useCallback((id: string, netTitle: string) => {
         dispatch(changeTodoListTitleAC(id, netTitle))
     }, [dispatch])
 
-    const addTodoList = useCallback((title: string) => {                      //кэширование функции
-        dispatch(addTodoListAC(title))
+    const addTodoList = useCallback((title: string) => {
+          let thunk = addTodoListTC(title)                                 //кэширование функции
+        dispatch(thunk)
     }, [dispatch])
 
 
