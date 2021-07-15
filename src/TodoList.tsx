@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useEffect} from "react";
 
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
@@ -6,19 +6,14 @@ import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./store/store";
-import {addTaskAC, changeTaskTitleAC} from "./redux/tasks-reducer";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, fetchTasksTC, removeTaskAC} from "./redux/tasks-reducer";
 import {Task} from "./Task";
 import {TaskStatuses, TaskType} from "./api/todoList-api";
-import {FilterValueType, TodoListDomainType} from "./redux/todolists-reducer";
+import { FilterValueType} from "./redux/todolists-reducer";
 // import {Delete} from '@material-ui/icons'
 
 
-// export type TaskType = {
-//     id: string
-//     title: string
-//     isDone: boolean
-//
-// }
+
 
 type PropsType = {
     id: string
@@ -27,7 +22,7 @@ type PropsType = {
     // removeTask: (taskId: string, todoListId: string) => void
     changeFilter: (value: FilterValueType, todoListId: string) => void
     // addTask: (title: string, todoListId: string) => void
-    // changeTaskStatus: (id: string, isDone: boolean, todoListId: string) => void
+    // changeStatus: (id: string, status: TaskStatuses, todoListId: string) => void
     // changeTaskTitle: (id: string, newValue: string, todoListId: string) => void
     changeTodoListTitle: (id: string, newTitle: string) => void
     filter: FilterValueType
@@ -45,12 +40,14 @@ export const TodoList = React.memo((props: PropsType) => {
     // function addTask(title: string, todoListId: string) {                //добавление новой таски
     //     dispatch(addTaskAC(title, todoListId))
     // }
-    // function changeStatus(id: string, isDone: boolean, todoListId: string) {               //чекбокс
-    //     dispatch(changeTaskStatusAC(id, isDone, todoListId))
+    // function changeStatus(id: string, status: TaskStatuses, todoListId: string) {               //чекбокс
+    //     dispatch(changeTaskStatusAC(id, status, todoListId))
     // }
 
 
-
+    useEffect(() => {
+        dispatch(fetchTasksTC(props.id))  //запрос тасок по id tl
+    }, [])
 
 
 
@@ -68,13 +65,8 @@ export const TodoList = React.memo((props: PropsType) => {
 // }
 
     let onClickAllHandler = useCallback(() => props.changeFilter('all', props.id), [props.changeFilter, props.id])  // в одну строчку без {}
-
-    let onClickActiveHandler = useCallback(() => {
-        props.changeFilter('active', props.id)
-    }, [props.changeFilter, props.id])
-    let onClickCompletedHandler = useCallback(() => {
-        props.changeFilter('completed', props.id)
-    }, [props.changeFilter, props.id])
+    let onClickActiveHandler = useCallback(() => {props.changeFilter('active', props.id)}, [props.changeFilter, props.id])
+    let onClickCompletedHandler = useCallback(() => {props.changeFilter('completed', props.id)}, [props.changeFilter, props.id])
 
     // const addTask = () => {
     //     if (title.trim() !== '') {                    //убранными с двух сторон пробелами (trim)
@@ -100,10 +92,10 @@ export const TodoList = React.memo((props: PropsType) => {
 
     let taskForTodoList = tasks     // берем из объекта tasks и достаем по id
     if (props.filter === 'active') {
-        taskForTodoList = tasks.filter(t => t.status=TaskStatuses.New)
+        taskForTodoList = tasks.filter(t => t.status===TaskStatuses.New)
     }
     if (props.filter === 'completed') {
-        taskForTodoList = tasks.filter(t => t.status=TaskStatuses.Completed)    //t.isDone === true
+        taskForTodoList = tasks.filter(t => t.status===TaskStatuses.Completed)    //t.isDone === true
     }
 
 
@@ -132,7 +124,7 @@ export const TodoList = React.memo((props: PropsType) => {
                 <div>
                     {
                         taskForTodoList.map(t =>
-                        <Task t={t} todoListId={props.id} key={props.id}/>
+                        <Task t={t} todoListId={props.id} key={t.id}/>
                         )
                     }
                 </div>

@@ -11,7 +11,6 @@ import thunkMiddleware from "redux-thunk";
 const rootReducer = combineReducers({
     todoLists: todoListReducer,
     tasks: tasksReducer,
-    filter: todoListReducer
 
 })
 // непосредственно создаём store

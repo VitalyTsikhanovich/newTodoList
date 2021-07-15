@@ -29,12 +29,12 @@ export const Task = React.memo((props: TaskPropsType) => {
         // props.changeTaskTitle(t.id, newValue, props.id)
     }, [dispatch, props.t.id, props.todoListId])
     //key обязательно
-    return <div key={props.t.id} className={props.t.status===TaskStatuses.Completed ? 'is-done' : ''}>
-        {/*<input type={'checkbox'} checked={t.isDone} onChange={onChangeStatusHandler}/>*/}
-        <Checkbox color={'primary'} checked={props.t.status===TaskStatuses.New} onChange={onChangeStatusHandler}/>
+    return <div key={props.t.id} className={props.t.status === TaskStatuses.New ? 'is-done' : ''}>
+
+        <Checkbox color={'primary'} checked={props.t.status === TaskStatuses.Completed} onChange={onChangeStatusHandler}/>
         <EditableSpan title={props.t.title} onChange={onChangeTitleHandler}/>
-        {/*<span>{t.title}</span>*/}
-        {/*<button onClick={onRemoveHandler}>x</button>*/}
+
+
         <IconButton onClick={onRemoveHandler}>
             <Delete/>
         </IconButton>

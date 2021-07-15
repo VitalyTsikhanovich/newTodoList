@@ -1,5 +1,5 @@
 import axios from "axios";
-import {FilterValueType} from "../redux/todolists-reducer";
+
 
 
 const setting = {
@@ -120,9 +120,9 @@ export const todoListApi = {
         return instance.delete<ResponseType>(`todo-lists/${todoListId}/tasks/${taskId}`)
     },
     createTask(todoListId: string, taskTitle: string) {
-        return instance.post<ResponseType<TaskType>>(`todo-lists/${todoListId}/tasks`, {title: taskTitle})
+        return instance.post<ResponseType<{item: TaskType}>>(`todo-lists/${todoListId}/tasks`, {title: taskTitle})
     },
     updateTask(todoListId: string, taskId: string,  model:UpdateTask ) {
-        return instance.put<UpdateTask>(`todo-lists/${todoListId}/tasks/${taskId}`, model)
+        return instance.put<ResponseType<TaskType>>(`todo-lists/${todoListId}/tasks/${taskId}`, model)
     }
 }
