@@ -35,17 +35,12 @@ export const tasksReducer = (state: InitialStateType = initialState, action: Act
         }
         case "ADD-TASK": {
             const stateCopy = {...state}
-            const newTask: TaskType = {
-                id: v1(),
-                title: action.title,
-                status: TaskStatuses.New,
-                todoListId: action.todoListId, description: '',
-                startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low
-            }
+            const newTask = action.task
+
             //достаем нужный массив по todoListId
-            let tasks = stateCopy[action.todoListId]
-             let newTasks = [newTask, ...tasks]
-            stateCopy[action.todoListId] = newTasks                   // [newTask, ...tasks]
+            let tasks = stateCopy[newTask.todoListId]
+            let newTasks = [newTask, ...tasks]
+            stateCopy[newTask.todoListId] = newTasks                   // [newTask, ...tasks]
             return stateCopy
         }
         // case "UPDATE-TASK":{
@@ -67,7 +62,7 @@ export const tasksReducer = (state: InitialStateType = initialState, action: Act
             let newTasksArray = todolistTasks.map(t => t.id === action.taskId ? {...t, title: action.newTitle} : t)
             // state[action.todoListId] = tasks.map(t => t.id === action.taskId ? {...t, title: action.newTitle} : t)
             //найдем нужную таску
-             state[action.todoListId] = newTasksArray
+            state[action.todoListId] = newTasksArray
             return ({...state})
         }
         case "ADD-TODOLIST": {
@@ -91,7 +86,7 @@ export const tasksReducer = (state: InitialStateType = initialState, action: Act
             })
             return stateCopy
         }
-        case "SET-TASK":{
+        case "SET-TASK": {
             const stateCopy = {...state}
             stateCopy[action.todoListIs] = action.tasks
             return stateCopy
@@ -103,10 +98,24 @@ export const tasksReducer = (state: InitialStateType = initialState, action: Act
 }
 
 export const removeTaskAC = (taskId: string, todoListId: string) => ({type: 'REMOVE-TASK', taskId, todoListId} as const)
-export const addTaskAC = (title: string, todoListId: string) => ({type: 'ADD-TASK', title, todoListId} as const)
-export const changeTaskStatusAC = (taskId: string, status: TaskStatuses, todoListId: string) => ({type: 'CHANGE-TASK-STATUS', taskId, status, todoListId} as const)
-export const changeTaskTitleAC = (taskId: string, newTitle: string, todoListId: string) => ({type: 'CHANGE-TASK-TITLE', taskId, newTitle, todoListId} as const)
-export const setTaskAC = (tasks: Array<TaskType>, todoListIs: string) => ({type: 'SET-TASK', tasks, todoListIs} as const)
+export const addTaskAC = (task: TaskType) => ({type: 'ADD-TASK', task} as const)
+export const changeTaskStatusAC = (taskId: string, status: TaskStatuses, todoListId: string) => ({
+    type: 'CHANGE-TASK-STATUS',
+    taskId,
+    status,
+    todoListId
+} as const)
+export const changeTaskTitleAC = (taskId: string, newTitle: string, todoListId: string) => ({
+    type: 'CHANGE-TASK-TITLE',
+    taskId,
+    newTitle,
+    todoListId
+} as const)
+export const setTaskAC = (tasks: Array<TaskType>, todoListIs: string) => ({
+    type: 'SET-TASK',
+    tasks,
+    todoListIs
+} as const)
 // export const updateTaskAC = (taskId: string, model: UpdateDomainTaskModelType, todoListId: string) => ({type: 'UPDATE-TASK', taskId, model, todoListId} as const)
 
 
@@ -145,3 +154,24 @@ export const fetchTasksTC = (todoListId: string) => {
             })
     }
 }
+
+export const removeTaskTS = (taskId: string ,todoListId: string ) => {
+    return (dispatch: Dispatch) => {
+        todoListApi.deleteTask(todoListId, taskId)
+            .then((res) => {
+                const action = removeTaskAC(taskId, todoListId)
+                dispatch(action)
+            })
+    }
+}
+export const addTaskTS = ( title: string, todoListId: string,) => {
+    return (dispatch: Dispatch) => {
+        todoListApi.createTask(todoListId, title)
+            .then((res) => {
+                const task = res.data.data.item
+                const action = addTaskAC(task)
+                dispatch(action)
+            })
+    }
+}
+

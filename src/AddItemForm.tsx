@@ -15,13 +15,29 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) =>{
         setError(null)
     }
     const addTask = () => {
-        if (title.trim() !== '') {
+        if (title.trim() !== '') {                           //убранными с двух сторон пробелами (trim)
             props.addItem(title)
             setTitle('')                              //добавить таску{
         } else {
             setError('Title is required')
         }
     }
+
+    // const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    //     if (error !== null) {
+    //         setError(null);
+    //     }
+    //     if (e.charCode === 13) {
+    //         addItem();
+    //     }
+    // }
+
+    // let onPressHandler = (event: KeyboardEvent<HTMLInputElement>)=>{
+// if (event.charCode === 13){
+//     props.addTask
+// }
+// }
+
     return (
 
         <div>

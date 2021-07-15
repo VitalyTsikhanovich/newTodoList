@@ -13,8 +13,11 @@ import {
     removeTodoListAC, TodoListDomainType,
 } from "./redux/todolists-reducer";
 import {AppRootStateType} from "./store/store";
-import {TaskStatuses, TaskType, TodoListType} from "./api/todoList-api";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./redux/tasks-reducer";
+import {TaskStatuses, TaskType} from "./api/todoList-api";
+import {
+    addTaskTS,
+
+} from "./redux/tasks-reducer";
 
 
 //генерировать текстовые уникальные id
@@ -34,28 +37,28 @@ function App() {
         dispatch(fetchTodoListTC())
     }, [])
 
+
+
+
     const changeFilter = useCallback((value: FilterValueType, todoListId: string) => {
         dispatch(changeTodoListFilterAC(value, todoListId))                     //!!!!!
     }, [dispatch])
 
-    // const changeFilter = useCallback(function (value: FilterValueType,  todoListId: string) {
-    //     const action = changeTodoListFilterAC(value, todoListId  );
-    //     dispatch(action);
-    // }, []);
+
 
     // const removeTask = useCallback(function (id: string, todolistId: string) {
-    //     const action = removeTaskAC(id, todolistId);
-    //     dispatch(action);
+    //     const thunk = removeTaskTS(id, todolistId);
+    //     dispatch(thunk);
     // }, []);
 
 
-    // const addTask = useCallback(function (title: string, todolistId: string) {
-    //     const action = addTaskAC(title, todolistId);
-    //     dispatch(action);
+    // const addTask = useCallback(function (title: string, todoListId: string) {
+    //     const thunk = addTaskTS(title, todoListId)
+    //     dispatch(thunk)
     // }, []);
 
-    // const changeStatus = useCallback(function (id: string, status: TaskStatuses, todolistId: string) {
-    //     const action = changeTaskStatusAC(id, status, todolistId);
+    // const changeStatus = useCallback(function (id: string, status: TaskStatuses, todoListId: string) {
+    //     const action = changeTaskStatusAC(id, status, todoListId);
     //     dispatch(action);
     // }, []);
 
@@ -107,29 +110,17 @@ function App() {
                                     <TodoList
                                         key={tl.id}
                                         id={tl.id}
-                                        // tasks={allTodolistTasks}
-                                        // removeTask={removeTask}
                                         title={tl.title}
                                         changeFilter={changeFilter}
                                         filter={tl.filter}
                                         removeTodoList={removeTodoList}
                                         changeTodoListTitle={changeTodoListTitle}
-                                        // changeTaskTitle={changeTaskTitle}
-                                        // changeStatus={changeStatus}
-                                        // addTask={addTask}
                                     />
                                 </Paper>
                             </Grid>
                         })
                     }
-                    {/*<TodoList title={' What to learn'}*/}
-                    {/*          tasks={taskForTodoList}*/}
-                    {/*          removeTask={removeTask}*/}
-                    {/*          changeFilter={changeFilter}*/}
-                    {/*          addTask={addTask}*/}
-                    {/*          changeTaskStatus={changeStatus}*/}
-                    {/*          filter={filter}*/}
-                    {/*/>*/}
+
                 </Grid>
             </Container>
         </div>
