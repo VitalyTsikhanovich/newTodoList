@@ -1,10 +1,10 @@
 import {useDispatch} from "react-redux";
-import React, {ChangeEvent, useCallback, useEffect} from "react";
+import React, {ChangeEvent, useCallback} from "react";
 import {Checkbox, IconButton} from "@material-ui/core";
 import {EditableSpan} from "./EditableSpan";
 import {Delete} from "@material-ui/icons";
 import {TaskStatuses, TaskType} from "./api/todoList-api";
-import {changeTaskStatusAC, changeTaskTitleAC, removeTaskTS} from "./redux/tasks-reducer";
+import {changeTaskStatusTC, changeTaskTitleAC, removeTaskTS} from "./redux/tasks-reducer";
 
 
 type TaskPropsType = {
@@ -26,7 +26,9 @@ export const Task = React.memo((props: TaskPropsType) => {
 
     let onChangeStatusHandler = useCallback((event: ChangeEvent<HTMLInputElement>) => {  //  контролируемый чекбокс
         let newIsDoneValue = event.currentTarget.checked
-        dispatch(changeTaskStatusAC(props.t.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New, props.todoListId))
+        let thunk = changeTaskStatusTC(props.todoListId, props.t.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New)
+        dispatch(thunk)
+        // dispatch(changeTaskStatusAC(props.t.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New, props.todoListId))
         // props.changeTaskStatus(props.t.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New, props.todoListId)
     }, [props.t.id, props.todoListId])
 
