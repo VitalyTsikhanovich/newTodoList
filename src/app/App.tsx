@@ -6,12 +6,10 @@ import {TaskType} from "../api/todoList-api";
 import {TodoListList} from "../features/TodoListsList/TodoListList";
 
 
-//генерировать текстовые уникальные id
 
 
-export type TasksStateType = {
-    [key: string]: Array<TaskType>,
-}
+
+
 
 function App() {
 

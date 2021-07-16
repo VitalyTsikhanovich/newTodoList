@@ -6,11 +6,11 @@ import {useDispatch, useSelector} from "react-redux";
 import {
     addTaskTS,
     fetchTasksTC,
-} from "../../../redux/tasks-reducer";
+} from "../tasks-reducer";
 import {Task} from "./Task/Task";
 import {TaskStatuses, TaskType} from "../../../api/todoList-api";
-import {FilterValueType, TodoListDomainType} from "../../../redux/todolists-reducer";
-import {AppRootStateType} from "../../../store/store";
+import {FilterValueType, TodoListDomainType} from "../todolists-reducer";
+import {AppRootStateType} from "../../../app/store";
 import {AddItemForm} from "../../../components/AddItemForm/AddItemForm";
 
 

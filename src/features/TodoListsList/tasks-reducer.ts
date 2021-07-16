@@ -1,8 +1,8 @@
-import {TasksStateType} from "../app/App";
+
 import {AddTodoListACType, RemoveTodoListACType, setTodoListACType} from "./todolists-reducer";
-import {TaskPriorities, TaskStatuses, TaskType, todoListApi, UpdateTask} from "../api/todoList-api";
+import {TaskPriorities, TaskStatuses, TaskType, todoListApi, UpdateTask} from "../../api/todoList-api";
 import {Dispatch} from "redux";
-import {AppRootStateType} from "../store/store";
+import {AppRootStateType} from "../../app/store";
 
 // export let todoListId1 = v1()
 // export let todoListId2 = v1()
@@ -153,4 +153,8 @@ export type UpdateDomainTaskModelType = {
     priority?: TaskPriorities
     startDate?: string
     deadline?: string
+}
+
+export type TasksStateType = {
+    [key: string]: Array<TaskType>,   //генерировать текстовые уникальные id
 }
