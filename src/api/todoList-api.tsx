@@ -21,83 +21,6 @@ const instance = axios.create({
     }
 })
 */
-
-export type TodoListType = {
-    id: string
-    title: string
-    addedDate: string
-    order: number
-}
-
-// type _CreateTodoListResponseType={
-//     resultCode: number
-//     messages: Array<string>             //string[]
-//     data: {
-//         item: TodoListType
-//     }
-// }
-// type DeleteUpdateTodoListResponseType={
-//     resultCode: number
-//     messages: Array<string>
-//     data: {}
-// }
-// type _UpdateTodoListResponseType={
-//     resultCode: number
-//     messages: Array<string>
-//     data: {}
-// }
-
-type ResponseType<D = {}> = {
-    resultCode: number
-    messages: Array<string>
-    data: D
-}
-
-export enum TaskStatuses{
-    New,
-    InProgress,
-    Completed,
-    Draft
-}
-
-export enum TaskPriorities {
-    Low,
-    Middle,
-    Hi,
-    Urgently,
-    Later
-}
-
-export type TaskType = {
-    description: string
-    title: string
-    status: TaskStatuses
-    priority: TaskPriorities
-    startDate: string
-    deadline: string
-    id: string
-    todoListId: string
-    order: number
-    addedDate: string
-}
-
-export type UpdateTask={
-    title: string
-    description: string
-    status: TaskStatuses
-    priority: TaskPriorities
-    startDate: string
-    deadline: string
-}
-
-
-type GetTasksResponse = {
-    error: string | null
-    totalCount: number
-    items: Array<TaskType>
-}
-
-
 export const todoListApi = {
     getTodoList() {
         let promise = instance.get<Array<TodoListType>>('todo-lists')
@@ -126,3 +49,71 @@ export const todoListApi = {
         return instance.put<ResponseType<TaskType>>(`todo-lists/${todoListId}/tasks/${taskId}`, model)
     }
 }
+// types
+export type TodoListType = {
+    id: string
+    title: string
+    addedDate: string
+    order: number
+}
+type ResponseType<D = {}> = {
+    resultCode: number
+    messages: Array<string>
+    data: D
+}
+export enum TaskStatuses{
+    New,
+    InProgress,
+    Completed,
+    Draft
+}
+export enum TaskPriorities {
+    Low,
+    Middle,
+    Hi,
+    Urgently,
+    Later
+}
+export type TaskType = {
+    description: string
+    title: string
+    status: TaskStatuses
+    priority: TaskPriorities
+    startDate: string
+    deadline: string
+    id: string
+    todoListId: string
+    order: number
+    addedDate: string
+}
+export type UpdateTask={
+    title: string
+    description: string
+    status: TaskStatuses
+    priority: TaskPriorities
+    startDate: string
+    deadline: string
+}
+type GetTasksResponse = {
+    error: string | null
+    totalCount: number
+    items: Array<TaskType>
+}
+
+// type _CreateTodoListResponseType={
+//     resultCode: number
+//     messages: Array<string>             //string[]
+//     data: {
+//         item: TodoListType
+//     }
+// }
+// type DeleteUpdateTodoListResponseType={
+//     resultCode: number
+//     messages: Array<string>
+//     data: {}
+// }
+// type _UpdateTodoListResponseType={
+//     resultCode: number
+//     messages: Array<string>
+//     data: {}
+// }

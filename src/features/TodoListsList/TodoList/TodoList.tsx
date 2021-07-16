@@ -1,17 +1,17 @@
 import React, {useCallback, useEffect} from "react";
-import {AddItemForm} from "./AddItemForm";
-import {EditableSpan} from "./EditableSpan";
+import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
 import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
 import {
     addTaskTS,
     fetchTasksTC,
-} from "./redux/tasks-reducer";
-import {Task} from "./Task";
-import {TaskStatuses, TaskType} from "./api/todoList-api";
-import {FilterValueType, TodoListDomainType} from "./redux/todolists-reducer";
-import {AppRootStateType} from "./store/store";
+} from "../../../redux/tasks-reducer";
+import {Task} from "./Task/Task";
+import {TaskStatuses, TaskType} from "../../../api/todoList-api";
+import {FilterValueType, TodoListDomainType} from "../../../redux/todolists-reducer";
+import {AppRootStateType} from "../../../store/store";
+import {AddItemForm} from "../../../components/AddItemForm/AddItemForm";
 
 
 
