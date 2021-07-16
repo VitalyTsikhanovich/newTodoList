@@ -1,23 +1,26 @@
 import axios from "axios";
 
-
-
 const setting = {
     withCredentials: true,
     headers: {
-        'API-KEY': 'b5686347-0f0a-4cd2-a65e-cc172facab53'
+        'API-KEY': '7c015d6f-f277-4c3f-8d68-e545362e26fc'
     }
 }
 
-
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
-    ...setting                                                    // withCredentials: true,
-    //headers: {
-    //  'API-KEY': 'e66d6d23-ce52-4d6b-97de-dbd90e8d428f'
-    // }
+    ...setting
 })
 
+/*
+const instance = axios.create({
+    baseURL: 'https://social-network.samuraijs.com/api/1.1/',
+     withCredentials: true,
+    headers: {
+     'API-KEY': 'e66d6d23-ce52-4d6b-97de-dbd90e8d428f'
+    }
+})
+*/
 
 export type TodoListType = {
     id: string
@@ -86,8 +89,6 @@ export type UpdateTask={
     startDate: string
     deadline: string
 }
-
-
 
 
 type GetTasksResponse = {

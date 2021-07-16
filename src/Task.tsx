@@ -4,7 +4,7 @@ import {Checkbox, IconButton} from "@material-ui/core";
 import {EditableSpan} from "./EditableSpan";
 import {Delete} from "@material-ui/icons";
 import {TaskStatuses, TaskType} from "./api/todoList-api";
-import {changeTaskStatusTC, changeTaskTitleAC, removeTaskTS} from "./redux/tasks-reducer";
+import { removeTaskTS, updateTaskTC} from "./redux/tasks-reducer";
 
 
 type TaskPropsType = {
@@ -26,7 +26,7 @@ export const Task = React.memo((props: TaskPropsType) => {
 
     let onChangeStatusHandler = useCallback((event: ChangeEvent<HTMLInputElement>) => {  //  контролируемый чекбокс
         let newIsDoneValue = event.currentTarget.checked
-        let thunk = changeTaskStatusTC(props.todoListId, props.t.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New)
+        let thunk = updateTaskTC(props.t.id, {status: newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New}, props.todoListId)
         dispatch(thunk)
         // dispatch(changeTaskStatusAC(props.t.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New, props.todoListId))
         // props.changeTaskStatus(props.t.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New, props.todoListId)
@@ -34,7 +34,9 @@ export const Task = React.memo((props: TaskPropsType) => {
 
 
     let onChangeTitleHandler = useCallback((newValue: string) => {
-        dispatch(changeTaskTitleAC(props.t.id, newValue, props.todoListId))
+        let thunk = updateTaskTC(props.t.id, {title: newValue}, props.todoListId)
+        dispatch(thunk)
+        // dispatch(updateTaskAC(props.t.id, {title:newValue}, props.todoListId))
         // props.changeTaskTitle(props.t.id, newValue, props.todoListId)
     }, [props.t.id, props.todoListId])
     //key обязательно

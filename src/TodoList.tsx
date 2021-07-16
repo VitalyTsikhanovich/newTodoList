@@ -12,8 +12,6 @@ import {Task} from "./Task";
 import {TaskStatuses, TaskType} from "./api/todoList-api";
 import {FilterValueType, TodoListDomainType} from "./redux/todolists-reducer";
 import {AppRootStateType} from "./store/store";
-// import {Delete} from '@material-ui/icons'
-
 
 
 
@@ -31,6 +29,9 @@ export const TodoList = React.memo((props: PropsType) => {
     const dispatch = useDispatch()
     const tasks = useSelector<AppRootStateType, Array<TaskType>>(state => state.tasks[props.id])
 
+    useEffect(() => {
+        dispatch(fetchTasksTC(props.id))  //запрос тасок по id tl
+    }, [])
 
     const addTask = useCallback(( title: string)=> {    //добавление новой таски
         const thunk = addTaskTS(title, props.id )
@@ -39,22 +40,9 @@ export const TodoList = React.memo((props: PropsType) => {
 
 
 
-    useEffect(() => {
-        dispatch(fetchTasksTC(props.id))  //запрос тасок по id tl
-    }, [])
-
-
-
-
-
-
     let onClickAllHandler = useCallback(() => props.changeFilter('all', props.id), [props.changeFilter, props.id])  // в одну строчку без {}
     let onClickActiveHandler = useCallback(() => {props.changeFilter('active', props.id)}, [props.changeFilter, props.id])
     let onClickCompletedHandler = useCallback(() => {props.changeFilter('completed', props.id)}, [props.changeFilter, props.id])
-
-
-
-
 
 
     let removeTodoList = () => {
