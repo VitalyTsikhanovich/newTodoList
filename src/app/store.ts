@@ -12,9 +12,11 @@ import {appReducer} from "./app-reduser";
 const rootReducer = combineReducers({
     todoLists: todoListReducer,
     tasks: tasksReducer,
-    app: appReducer
+    app: appReducer,
 
 })
+
+
 // непосредственно создаём store
 export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));  // applyMiddleware(thunkMiddleware)
 // определить автоматически тип всего объекта состояния
