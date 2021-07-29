@@ -1,3 +1,4 @@
+import { error } from 'node:console'
 import {
   AddTodoListACType,
   RemoveTodoListACType,
@@ -19,6 +20,10 @@ import {
   setStatusAC,
   setStatusACType,
 } from '../../app/app-reducer'
+import {
+  handleServerAppError,
+  handleServerNetworkError,
+} from '../../utils/error-utils'
 
 // export let todoListId1 = v1()
 // export let todoListId2 = v1()
@@ -142,21 +147,26 @@ export const addTaskTS = (title: string, todoListId: string) => (
   dispatch: Dispatch
 ) => {
   dispatch(setStatusAC('loading'))
-  todoListApi.createTask(todoListId, title).then((res) => {
-    if (res.data.resultCode === 0) {
-      const task = res.data.data.item
-      const action = addTaskAC(task)
-      dispatch(action)
-      dispatch(setStatusAC('succeeded'))
-    } else {
-      if (res.data.messages.length) {
-        dispatch(setErrorAC(res.data.messages[0]))
+  todoListApi
+    .createTask(todoListId, title)
+    .then((res) => {
+      if (res.data.resultCode === 0) {
+        const task = res.data.data.item
+        const action = addTaskAC(task)
+        dispatch(action)
+        dispatch(setStatusAC('succeeded'))
       } else {
-        dispatch(setErrorAC('Some error occurred'))
+        if (res.data.messages.length) {
+          dispatch(setErrorAC(res.data.messages[0]))
+        } else {
+          dispatch(setErrorAC('Some error occurred'))
+        }
+        dispatch(setStatusAC('failed'))
       }
-      dispatch(setStatusAC('failed'))
-    }
-  })
+    })
+    .catch((error) => {
+      handleServerNetworkError(error, dispatch)
+    })
 }
 
 export const updateTaskTC = (
@@ -179,10 +189,25 @@ export const updateTaskTC = (
     description: task.description,
     ...domainModel,
   }
-  todoListApi.updateTask(todoListId, taskId, apiModel).then((res) => {
-    const action = updateTaskAC(taskId, domainModel, todoListId)
-    dispatch(action)
-  })
+  todoListApi
+    .updateTask(todoListId, taskId, apiModel)
+    .then((res) => {
+      if (res.data.resultCode === 0) {
+        const action = updateTaskAC(taskId, domainModel, todoListId)
+        dispatch(action)
+      } else {
+        handleServerAppError(res.data, dispatch)
+        //   if (res.data.messages.length) {
+        //     dispatch(setErrorAC(res.data.messages[0]))
+        //   } else {
+        //     dispatch(setErrorAC('Some error occurred'))
+        //   }
+        //   dispatch(setStatusAC('failed'))
+      }
+    })
+    .catch((error) => {
+      handleServerNetworkError(error, dispatch)
+    })
 }
 
 // types
