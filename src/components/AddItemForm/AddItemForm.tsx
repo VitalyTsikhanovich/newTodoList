@@ -19,7 +19,7 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) =>{
             props.addItem(title)
             setTitle('')                              //добавить таску{
         } else {
-            setError('Title is required')
+            setError('Title is required');
         }
     }
 
