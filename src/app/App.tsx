@@ -14,7 +14,7 @@ import { TodoListList } from '../features/TodoListsList/TodoListList'
 import { ErrorSnackBar } from '../components/ErrorSnackBar/ErrorSnackBar'
 import { useSelector } from 'react-redux'
 import { AppRootStateType } from './store'
-import { RequestStatusType } from './app-reduser'
+import { RequestStatusType } from './app-reducer'
 
 function App() {
   let status = useSelector<AppRootStateType, RequestStatusType>(

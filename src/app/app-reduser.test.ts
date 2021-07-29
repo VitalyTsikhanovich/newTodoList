@@ -3,7 +3,7 @@ import {
   InitialStateType,
   setErrorAC,
   setStatusAC,
-} from './app-reduser'
+} from './app-reducer'
 
 let startState: InitialStateType
 

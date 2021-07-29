@@ -12,9 +12,8 @@ type TaskPropsType = {
 }
 export const Task = React.memo((props: TaskPropsType) => {
   const dispatch = useDispatch()
-
+  // удаление таски
   let onRemoveHandler = useCallback(() => {
-    //удаление таски
     const thunk = removeTaskTS(props.t.id, props.todoListId)
     dispatch(thunk)
   }, [])
@@ -22,9 +21,9 @@ export const Task = React.memo((props: TaskPropsType) => {
   // let onRemoveHandler = () => dispatch(removeTaskAC(props.t.id, props.todoListId))
   // let onRemoveHandler = useCallback(()=>props.removeTask(props.t.id, props.todoListId),[props.t.id, props.todoListId])
 
+  // контролируемый чекбокс
   let onChangeStatusHandler = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
-      //  контролируемый чекбокс
       let newIsDoneValue = event.currentTarget.checked
       let thunk = updateTaskTC(
         props.t.id,
