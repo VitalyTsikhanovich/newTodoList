@@ -3,7 +3,7 @@ import axios from 'axios'
 const setting = {
     withCredentials: true,
     headers: {
-        'API-KEY': '7c015d6f-f277-4c3f-8d68-e545362e26fc',
+        'API-KEY': 'e0364a45-b776-45ce-a5e2-732ef20bc482',
     },
 }
 
@@ -64,7 +64,7 @@ export const todoListApi = {
 
 export const authAPI = {
     login(data: LoginParamsType) {
-        return instance.post<ResponseType<{userId?: number}>>(`auth/login`, {data})
+        return instance.post<ResponseType>(`auth/login`, data)
     }
 }
 
@@ -126,9 +126,8 @@ type GetTasksResponse = {
 export type LoginParamsType = {
     email: string
     password: string
-    rememberMe: boolean
+    rememberMe?: boolean
     captcha?: string
-
 }
 
 // type _CreateTodoListResponseType={

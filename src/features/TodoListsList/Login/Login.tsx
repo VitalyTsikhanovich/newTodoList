@@ -1,11 +1,14 @@
 import React from 'react'
 import {Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, TextField, Button, Grid} from '@material-ui/core'
 import {useFormik} from "formik";
-import {useDispatch} from "react-redux";
-import {loginTC} from "./login-reducer";
+import {useDispatch, useSelector} from "react-redux";
+import {loginTC} from "./auth-reducer";
+import {AppRootStateType} from "../../../app/store";
+import {Redirect} from "react-router-dom";
 
 export const Login = () => {
     let dispatch = useDispatch()
+let isLoggedIn = useSelector<AppRootStateType, boolean>((state =>state.auth.isLoggedIn ))
     type FormikErrorType = {
         email?: string
         password?: string
@@ -42,6 +45,9 @@ export const Login = () => {
 
     });
 
+if (isLoggedIn){                     // при успешной логинизации редирект на гс
+    return <Redirect to={'/'}/>
+}
 
     return <Grid container justify="center">
         <Grid item xs={4}>
@@ -68,10 +74,12 @@ export const Login = () => {
                             type="password"
                             label="Password"
                             margin="normal"
-                            name={'password'}                        //для примера {...formik.getFieldProps('password')}
-                            onChange={formik.handleChange}
-                            value={formik.values.password}
-                            onBlur={formik.handleBlur}
+                            // name={'password'}
+                            //для примера
+                             {...formik.getFieldProps('password')}
+                            // onChange={formik.handleChange}
+                            // value={formik.values.password}
+                            // onBlur={formik.handleBlur}
                         />
                         {formik.touched.password && formik.errors.password ? <div>{formik.errors.password}</div> : null}
                         <FormControlLabel

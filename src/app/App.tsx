@@ -39,10 +39,10 @@ function App() {
             <Container fixed>
                 {/*<TodoListList/>*/}
                 <Switch>
-                <Route  path={'/login'} render={()=> <Login/>}/>
+                <Route  path={'/login'} render={()=> <Login />}/>
                 <Route exact path={'/'} render={()=> <TodoListList/>}/>
                 <Route path={ '/404' } render={ () => <h1>404: PAGE NOT FOUND</h1> }/>
-                    <Redirect from={'*'} to={'/login'}/>
+                    {/*<Redirect from={'*'} to={'/login'}/>*/}
                 </Switch>
             </Container>
         </div>
