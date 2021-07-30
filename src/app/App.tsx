@@ -1,8 +1,8 @@
-import React from 'react'
+import React, {useCallback, useEffect} from 'react'
 import './App.css'
 import {
     AppBar,
-    Button,
+    Button, CircularProgress,
     Container,
     IconButton,
     LinearProgress,
@@ -12,16 +12,35 @@ import {
 import {Menu} from '@material-ui/icons'
 import {TodoListList} from '../features/TodoListsList/TodoListList'
 import {ErrorSnackBar} from '../components/ErrorSnackBar/ErrorSnackBar'
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {AppRootStateType} from './store'
-import {RequestStatusType} from './app-reducer'
-import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
+import {AppInitializedTC, RequestStatusType} from './app-reducer'
+import {BrowserRouter, Route, Switch} from "react-router-dom";
 import {Login} from "../features/TodoListsList/Login/Login";
+import {logoutTC} from "../features/TodoListsList/Login/auth-reducer";
 
 function App() {
+
+    const dispatch = useDispatch()
     let status = useSelector<AppRootStateType, RequestStatusType>(
         (state) => state.app.status
     )
+    let isInitialized = useSelector<AppRootStateType, boolean>((state =>state.app.isInitialized ))
+    let isLoggedIn = useSelector<AppRootStateType, boolean>((state =>state.auth.isLoggedIn ))
+    useEffect(()=>{
+        dispatch(AppInitializedTC)
+    },[dispatch])
+    const logoutHandler = useCallback(()=>{
+        dispatch(logoutTC())
+    },[dispatch])
+
+    if (!isInitialized){
+        return <CircularProgress />
+    }
+
+
+
+
     return (
         <BrowserRouter>
         <div className="App">
@@ -32,7 +51,7 @@ function App() {
                         <Menu/>
                     </IconButton>
                     <Typography variant="h6">Todolist</Typography>
-                    <Button color="inherit">Login</Button>
+                    {isLoggedIn && <Button color="inherit" onClick={logoutHandler}>Log out</Button>}
                 </Toolbar>
                 {status === 'loading' && <LinearProgress/>}
             </AppBar>

@@ -14,6 +14,7 @@ import { Grid, Paper } from '@material-ui/core'
 import { AddItemForm } from '../../components/AddItemForm/AddItemForm'
 import { TodoList } from './TodoList/TodoList'
 import { TasksStateType } from './tasks-reducer'
+import {Redirect} from "react-router-dom";
 
 export const TodoListList: React.FC = () => {
   const dispatch = useDispatch()
@@ -23,10 +24,18 @@ export const TodoListList: React.FC = () => {
   const tasks = useSelector<AppRootStateType, TasksStateType>(
     (state) => state.tasks
   )
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+
+   useEffect(()=>{
+       if (!isLoggedIn){
+           return
+       }
+   })
+
 
   useEffect(() => {
     dispatch(fetchTodoListTC())
-  }, [])
+  }, [dispatch])
 
   const changeFilter = useCallback(
     (value: FilterValueType, todoListId: string) => {
@@ -58,6 +67,9 @@ export const TodoListList: React.FC = () => {
     },
     [dispatch]
   )
+    if (!isLoggedIn){
+        return <Redirect to={'/login'}/>
+    }
   return (
     <>
       <Grid container style={{ padding: '20px' }}>

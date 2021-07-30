@@ -23,8 +23,7 @@ const instance = axios.create({
 */
 export const todoListApi = {
     getTodoList() {
-        let promise = instance.get<Array<TodoListType>>('todo-lists')
-        return promise
+        return instance.get<Array<TodoListType>>('todo-lists')
     },
     createTodoList(title: string) {
         return instance.post<ResponseType<{ item: TodoListType }>>('todo-lists', {
@@ -65,7 +64,13 @@ export const todoListApi = {
 export const authAPI = {
     login(data: LoginParamsType) {
         return instance.post<ResponseType>(`auth/login`, data)
-    }
+    },
+    logout(){
+       return instance.delete<ResponseType>(`auth/login`)
+    },
+    me(){
+        return instance.get<ResponseType<{id: number; email: string; login: string}>>(`auth/me`)
+}
 }
 
 
